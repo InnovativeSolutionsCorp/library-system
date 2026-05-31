@@ -10,7 +10,9 @@ def print_menu() -> None:
     print("3. Remove a book")
     print("4. Borrow a book")
     print("5. Return a book")
-    print("6. Exit")
+    print("6. Search by title")
+    print("7. Search by author")
+    print("8. Exit")
 
 
 def display_books(library: Library) -> None:
@@ -32,6 +34,23 @@ def prompt_book_details() -> tuple[str, str, str]:
 
 def prompt_isbn() -> str:
     return input("Enter ISBN: ").strip()
+
+
+def search_books(library: Library, query: str, field: str) -> list[Book]:
+    query_lower = query.lower()
+    if field == "title":
+        return [book for book in library.books if query_lower in book.title.lower()]
+    return [book for book in library.books if query_lower in book.author.lower()]
+
+
+def print_search_results(results: list[Book], field: str, query: str) -> None:
+    if not results:
+        print(f"No books found matching {field} '{query}'.")
+        return
+
+    print(f"\nSearch results for {field} '{query}':")
+    for book in results:
+        print(f"- {book}")
 
 
 def main() -> None:
@@ -80,10 +99,24 @@ def main() -> None:
                 continue
             print(library.return_book(isbn))
         elif choice == "6":
+            query = input("Enter title search term: ").strip()
+            if not query:
+                print("Search term is required.")
+                continue
+            results = search_books(library, query, "title")
+            print_search_results(results, "title", query)
+        elif choice == "7":
+            query = input("Enter author search term: ").strip()
+            if not query:
+                print("Search term is required.")
+                continue
+            results = search_books(library, query, "author")
+            print_search_results(results, "author", query)
+        elif choice == "8":
             print("Goodbye!")
             break
         else:
-            print("Invalid choice. Please enter a number between 1 and 6.")
+            print("Invalid choice. Please enter a number between 1 and 8.")
 
 
 if __name__ == "__main__":
