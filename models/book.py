@@ -1,16 +1,15 @@
-# Create a Book class with:
-# title
-# author
-# isbn
-# available
-# constructor
-# __str__
-class Book:
-    def __init__(self, title, author, isbn, available=True):
-        self.title = title
-        self.author = author
-        self.isbn = isbn
-        self.available = available
+from __future__ import annotations
 
-    def __str__(self):
-        return f"{self.title} by {self.author} (ISBN: {self.isbn}) - {'Available' if self.available else 'Not Available'}"
+from dataclasses import dataclass
+
+
+@dataclass
+class Book:
+    title: str
+    author: str
+    isbn: str
+    available: bool = True
+
+    def __str__(self) -> str:
+        availability = "Available" if self.available else "Not Available"
+        return f"{self.title} by {self.author} (ISBN: {self.isbn}) - {availability}"

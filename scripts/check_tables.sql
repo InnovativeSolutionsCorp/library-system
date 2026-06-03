@@ -1,0 +1,1 @@
+SELECT SCHEMA_NAME(schema_id) AS SchemaName, name FROM sys.tables ORDER BY name;

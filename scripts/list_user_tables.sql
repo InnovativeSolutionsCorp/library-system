@@ -1,0 +1,1 @@
+SELECT SCHEMA_NAME(o.schema_id) AS SchemaName, o.name FROM sys.objects o WHERE o.type='U' ORDER BY o.name;

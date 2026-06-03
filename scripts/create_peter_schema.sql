@@ -1,0 +1,33 @@
+SET NOCOUNT ON;
+
+IF OBJECT_ID('dbo.Players','U') IS NULL
+BEGIN
+ CREATE TABLE dbo.Players (
+  PlayerId INT IDENTITY(1,1) PRIMARY KEY,
+  FirstName NVARCHAR(100) NOT NULL,
+  LastName NVARCHAR(100) NOT NULL,
+  Country NVARCHAR(50) NULL,
+  DOB DATE NULL,
+  Ranking INT NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME()
+ );
+END
+
+IF OBJECT_ID('dbo.Matches','U') IS NULL
+BEGIN
+ CREATE TABLE dbo.Matches (
+  MatchId INT IDENTITY(1,1) PRIMARY KEY,
+  Player1Id INT NOT NULL,
+  Player2Id INT NOT NULL,
+  WinnerId INT NULL,
+  Score NVARCHAR(50) NULL,
+  Tournament NVARCHAR(200) NULL,
+  MatchDate DATETIME2 NOT NULL,
+  DurationMinutes INT NULL,
+  Surface NVARCHAR(50) NULL
+ );
+
+ ALTER TABLE dbo.Matches ADD CONSTRAINT FK_Matches_Player1 FOREIGN KEY (Player1Id) REFERENCES dbo.Players(PlayerId);
+ ALTER TABLE dbo.Matches ADD CONSTRAINT FK_Matches_Player2 FOREIGN KEY (Player2Id) REFERENCES dbo.Players(PlayerId);
+ ALTER TABLE dbo.Matches ADD CONSTRAINT FK_Matches_Winner FOREIGN KEY (WinnerId) REFERENCES dbo.Players(PlayerId);
+END
